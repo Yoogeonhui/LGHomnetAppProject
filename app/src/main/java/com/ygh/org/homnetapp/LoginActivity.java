@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.ygh.org.homnetapp.Request.CallbackAfterRequest;
 import com.ygh.org.homnetapp.Request.RequestUtil;
 
 public class LoginActivity extends AppCompatActivity {
@@ -61,7 +62,13 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         RequestUtil req = RequestUtil.getInstance();
-        //Pair<Boolean, String> res = req.login(inputID, inputPwd);
+        CallbackAfterRequest callbackAfterRequest = (Pair<Boolean, String> result)->{
+            Toast.makeText(context, result.second, Toast.LENGTH_LONG).show();
+            if(result.first){
+                //TODO
+            }
+        };
+        req.login(inputID, inputPwd, callbackAfterRequest);
 
     }
 }
