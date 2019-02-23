@@ -8,12 +8,15 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Selector;
 
+import java.util.HashMap;
+import java.util.Map;
 
 import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 public class RequestUtil {
@@ -30,6 +33,7 @@ public class RequestUtil {
         retrofit = new Retrofit.Builder().baseUrl(request_url)
                 .client(client)
                 .addConverterFactory(ScalarsConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
                 .build();
         homnetService = retrofit.create(HomnetService.class);
     }
@@ -106,11 +110,10 @@ public class RequestUtil {
     }
 
     public void sendRequest(String msg, Callback<String> callback){
-        Data param = new Data(msg);
-        Call<String> response = homnetService.sendRequest(param);
-        response.enqueue(
-            callback
-        );
+        Map<String,String> map = new HashMap<>();
+        map.put("strMsg", msg);
+        Call<String> response = homnetService.sendRequest(map);
+        response.enqueue(callback);
     }
 
     public static RequestUtil getInstance() {

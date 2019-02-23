@@ -1,8 +1,9 @@
 package com.ygh.org.homnetapp;
 
-import android.app.DownloadManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.util.Log;
 import android.util.Pair;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,6 +13,13 @@ import android.widget.Toast;
 
 import com.ygh.org.homnetapp.Request.CallbackAfterRequest;
 import com.ygh.org.homnetapp.Request.RequestUtil;
+
+import java.util.HashSet;
+import java.util.Set;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -24,24 +32,35 @@ public class LoginActivity extends AppCompatActivity {
 
         SharedPreferences saved = SharedPreferenceBase.getInstance().getPreferences();
 
-        String sessionID = saved.getString("sessionID", null);
         String userID = saved.getString("userID", null);
         String userPwd = saved.getString("userPwd", null);
-
-        if(sessionID != null){
-            RequestUtil req = RequestUtil.getInstance();
-
-        }
 
         editID = findViewById(R.id.loginID);
         editPwd = findViewById(R.id.loginPwd);
 
         editID.setText(userID);
         editPwd.setText(userPwd);
+
+
+        RequestUtil req = RequestUtil.getInstance();
+        Context currentContext = this;
+        req.sendRequest("LIST", new Callback<String>(){
+
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                Log.d("TAG", response.body());
+                if(!response.body().equals("\"LOGOUT\"")){
+                    Intent controlIntent = new Intent(currentContext, ControlActivity.class);
+                    startActivity(controlIntent);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                Toast.makeText(getApplicationContext(), "에러: "+t.getMessage() , Toast.LENGTH_LONG).show();
+            }
+        });
     }
-
-
-
     @Override
     protected void onStop(){
         super.onStop();
