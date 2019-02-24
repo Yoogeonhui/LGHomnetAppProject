@@ -1,8 +1,15 @@
 package com.ygh.org.homnetapp.Device;
 
-public class Vent implements Device {
-    @Override
-    public void getInfo() {
+import android.content.Context;
+
+public class Vent extends Device {
+
+    public Vent(String deviceName, Context activityContext){
+        super(activityContext);
+        this.deviceName = deviceName;
+    }
+
+    public void updateDevice() {
 
     }
 

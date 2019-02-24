@@ -74,7 +74,7 @@ public class RequestUtil {
                 }
 
                 if(response.body().contains("ActiveX 초기화")){
-                    callback.OnResponse(new Pair<>(false, "벌써 로그인 되어있습니다."));
+                    callback.OnResponse(new Pair<>(true, "벌써 로그인 되어있습니다."));
                     return;
                 }
 

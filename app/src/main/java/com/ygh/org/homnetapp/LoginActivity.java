@@ -49,7 +49,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
                 Log.d("TAG", response.body());
-                if(!response.body().equals("\"LOGOUT\"")){
+                if(!response.body().equals("\"LOGOUT\"") && !response.body().equals("\"Object reference not set to an instance of an object.\"")){
                     Intent controlIntent = new Intent(currentContext, ControlActivity.class);
                     startActivity(controlIntent);
                 }
@@ -84,7 +84,8 @@ public class LoginActivity extends AppCompatActivity {
         CallbackAfterRequest callbackAfterRequest = (Pair<Boolean, String> result)->{
             Toast.makeText(context, result.second, Toast.LENGTH_LONG).show();
             if(result.first){
-                //TODO
+                Intent intent = new Intent(this, ControlActivity.class);
+                startActivity(intent);
             }
         };
         req.login(inputID, inputPwd, callbackAfterRequest);

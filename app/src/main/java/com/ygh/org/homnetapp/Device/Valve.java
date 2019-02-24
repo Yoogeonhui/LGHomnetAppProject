@@ -1,9 +1,12 @@
 package com.ygh.org.homnetapp.Device;
 
-public class Valve implements Device {
-    @Override
-    public void getInfo() {
+import android.content.Context;
 
+public class Valve extends Device {
+
+    public Valve(String deviceName, Context activityContext){
+        super(activityContext);
+        this.deviceName = deviceName;
     }
 
     @Override
